@@ -238,7 +238,7 @@
 ;; Microarchitectures we know how to tune for.
 ;; Keep this in sync with enum riscv_microarchitecture.
 (define_attr "tune"
-  "generic,sifive_7"
+  "generic,sifive_7,bsg_vanilla"
   (const (symbol_ref "((enum attr_tune) riscv_microarchitecture)")))
 
 ;; Describe a user's asm statement.
@@ -2473,3 +2473,4 @@
 (include "pic.md")
 (include "generic.md")
 (include "sifive-7.md")
+(include "bsg_vanilla.md")
