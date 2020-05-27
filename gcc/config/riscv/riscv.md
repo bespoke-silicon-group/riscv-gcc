@@ -235,6 +235,9 @@
 ;; Is copying of this instruction disallowed?
 (define_attr "cannot_copy" "no,yes" (const_string "no"))
 
+;; Is this a remote or local mem op
+(define_attr "remote_mem_op" "no,yes" (const_string "no"))
+
 ;; Microarchitectures we know how to tune for.
 ;; Keep this in sync with enum riscv_microarchitecture.
 (define_attr "tune"
@@ -1336,6 +1339,19 @@
   if (riscv_legitimize_move (<MODE>mode, operands[0], operands[1]))
     DONE;
 })
+
+
+(define_insn "*movsi_mem_internal"
+  [(set (match_operand:SI 0 "nonimmediate_operand" "=r,r,r, m,  *f,*f,*r,*m")
+	(match_operand:SI 1 "move_operand"         " r,T,m,rJ,*r*J,*m,*f,*f"))]
+  "((register_operand (operands[0], SImode)
+    || reg_or_0_operand (operands[1], SImode))
+  && memory_operand(operands[1], SImode)
+  && MEM_ADDR_SPACE(operands[1]) == ADDR_SPACE_REMOTE)"
+  { return riscv_output_move_debug_wrapper ("*movsi_mem_internal", operands[0], operands[1]); }
+  [(set_attr "move_type" "move,const,load,store,mtc,fpload,mfc,fpstore")
+   (set_attr "mode" "SI")
+   (set_attr "remote_mem_op" "yes")])
 
 (define_insn "*movsi_internal"
   [(set (match_operand:SI 0 "nonimmediate_operand" "=r,r,r, m,  *f,*f,*r,*m")
