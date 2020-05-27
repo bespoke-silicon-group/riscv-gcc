@@ -30,6 +30,12 @@
        (eq_attr "type" "unknown,const,arith,shift,slt,multi,auipc,nop,logical,move"))
   "bsg_vanilla_alu")
 
+(define_insn_reservation "bsg_vanilla_remote_load" 32
+  (and (eq_attr "tune" "bsg_vanilla")
+       (eq_attr "type" "load,fpload")
+       (eq_attr "remote_mem_op" "yes"))
+  "bsg_vanilla_alu")
+
 (define_insn_reservation "bsg_vanilla_load" 3
   (and (eq_attr "tune" "bsg_vanilla")
        (eq_attr "type" "load,fpload"))
