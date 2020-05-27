@@ -1987,6 +1987,28 @@ riscv_output_move (rtx dest, rtx src)
 }
 
 const char *
+riscv_output_move_debug_wrapper (const char *define_insn, rtx dest, rtx src)
+{
+    enum rtx_code dest_code = GET_CODE(dest);
+    enum rtx_code src_code  = GET_CODE(src);
+
+    fprintf(stderr, "%s: called from match with %s\n", __func__, define_insn);
+    fprintf(stderr, "%s: GET_CODE(dest) = %d, NAME = %s, FORMAT = %s\n",
+	    __func__, dest_code, GET_RTX_NAME(dest_code), GET_RTX_FORMAT(dest_code));
+
+    fprintf(stderr, "%s: GET_CODE(src)  = %d, NAME = %s, FORMAT = %s\n",
+	    __func__, src_code, GET_RTX_NAME(src_code), GET_RTX_FORMAT(src_code));
+
+    if (src_code == MEM) {
+	fprintf(stderr, "%s: MEM_ADDR_SPACE(src) = %d\n", __func__, MEM_ADDR_SPACE(src));
+	fprintf(stderr, "%s: memory_address_addr_space_p(SImode, src, ADDR_SPACE_REMOTE) = %d\n",
+		__func__, memory_address_addr_space_p(SImode, src, ADDR_SPACE_REMOTE));
+    }
+
+    return riscv_output_move(dest, src);
+}
+
+const char *
 riscv_output_return ()
 {
   if (cfun->machine->naked_p)
