@@ -918,4 +918,11 @@ extern unsigned riscv_stack_boundary;
 #define SWSP_REACH (4LL << C_SxSP_BITS)
 #define SDSP_REACH (8LL << C_SxSP_BITS)
 
+#define ADDR_SPACE_REMOTE 1
+#define REGISTER_TARGET_PRAGMAS()					\
+    do {								\
+	if (riscv_microarchitecture == bsg_vanilla)			\
+	    c_register_addr_space("__remote", ADDR_SPACE_REMOTE);	\
+    } while (0)								\
+
 #endif /* ! GCC_RISCV_H */
