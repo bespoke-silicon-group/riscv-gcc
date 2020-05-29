@@ -4649,6 +4649,8 @@ riscv_conditional_register_usage (void)
 static int
 riscv_register_priority (int regno)
 {
+  fprintf(stderr, "%s: TARGET_RVC == %d\n", __func__, TARGET_RVC);
+
   /* Favor x8-x15/f8-f15 to improve the odds of RVC instruction selection.  */
   if (TARGET_RVC && (IN_RANGE (regno, GP_REG_FIRST + 8, GP_REG_FIRST + 15)
 		     || IN_RANGE (regno, FP_REG_FIRST + 8, FP_REG_FIRST + 15)))
