@@ -2948,7 +2948,10 @@ true_dependence_1 (const_rtx mem, machine_mode mem_mode, rtx mem_addr,
   /* If we have MEMs referring to different address spaces (which can
      potentially overlap), we cannot easily tell from the addresses
      whether the references overlap.  */
-  if (MEM_ADDR_SPACE (mem) != MEM_ADDR_SPACE (x))
+  /* TODO: really - the target should just have a hook addr_space.does_overlap_p() */
+  if ((MEM_ADDR_SPACE (mem) != MEM_ADDR_SPACE (x))
+      && !targetm.addr_space.subset_p(MEM_ADDR_SPACE(mem), MEM_ADDR_SPACE(x))
+      && !targetm.addr_space.subset_p(MEM_ADDR_SPACE(x), MEM_ADDR_SPACE(mem)))
     return 1;
 
   base = find_base_term (x_addr);
@@ -3055,7 +3058,10 @@ write_dependence_p (const_rtx mem,
   /* If we have MEMs referring to different address spaces (which can
      potentially overlap), we cannot easily tell from the addresses
      whether the references overlap.  */
-  if (MEM_ADDR_SPACE (mem) != MEM_ADDR_SPACE (x))
+    /* TODO: really - the target should just have a hook addr_space.does_overlap_p() */
+  if ((MEM_ADDR_SPACE (mem) != MEM_ADDR_SPACE (x))
+      && !targetm.addr_space.subset_p(MEM_ADDR_SPACE(mem), MEM_ADDR_SPACE(x))
+      && !targetm.addr_space.subset_p(MEM_ADDR_SPACE(x), MEM_ADDR_SPACE(mem)))
     return 1;
 
   base = find_base_term (true_mem_addr);
@@ -3178,7 +3184,10 @@ may_alias_p (const_rtx mem, const_rtx x)
   /* If we have MEMs referring to different address spaces (which can
      potentially overlap), we cannot easily tell from the addresses
      whether the references overlap.  */
-  if (MEM_ADDR_SPACE (mem) != MEM_ADDR_SPACE (x))
+  /* TODO: really - the target should just have a hook addr_space.does_overlap_p() */
+  if ((MEM_ADDR_SPACE (mem) != MEM_ADDR_SPACE (x))
+      && !targetm.addr_space.subset_p(MEM_ADDR_SPACE(mem), MEM_ADDR_SPACE(x))
+      && !targetm.addr_space.subset_p(MEM_ADDR_SPACE(x), MEM_ADDR_SPACE(mem)))
     return 1;
 
   rtx x_base = find_base_term (x_addr);

@@ -4972,6 +4972,17 @@ riscv_promote_function_mode (const_tree type ATTRIBUTE_UNUSED,
   return mode;
 }
 
+/* Implement TARGET_ADDR_SPACE_SUBSET_P */
+static bool
+riscv_addr_space_subset_p(addr_space_t subset   ATTRIBUTE_UNUSED,
+			  addr_space_t superset ATTRIBUTE_UNUSED)
+{
+  return true;
+}
+
+#undef  TARGET_ADDR_SPACE_SUBSET_P
+#define TARGET_ADDR_SPACE_SUBSET_P riscv_addr_space_subset_p
+
 /* Initialize the GCC target structure.  */
 #undef TARGET_ASM_ALIGNED_HI_OP
 #define TARGET_ASM_ALIGNED_HI_OP "\t.half\t"
