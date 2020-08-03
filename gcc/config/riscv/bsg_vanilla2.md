@@ -65,7 +65,7 @@
   "bsg_vanilla_alu")
 
 ;; idiv
-(define_insn_reservation "bsg_vanilla_idiv" 33
+(define_insn_reservation "bsg_vanilla_idiv" 34
   (and (eq_attr "tune" "bsg_vanilla2")
        (eq_attr "type" "idiv"))
   "bsg_vanilla_alu,bsg_vanilla_idiv*33")
@@ -110,7 +110,7 @@
   "bsg_vanilla_alu")
 
 ;; fdiv
-(define_insn_reservation "bsg_vanilla_fdiv" 25
+(define_insn_reservation "bsg_vanilla_fdiv" 26
   (and (eq_attr "tune" "bsg_vanilla2")
        (eq_attr "type" "fdiv,fsqrt"))
   "bsg_vanilla_alu,bsg_vanilla_fdiv*25")
