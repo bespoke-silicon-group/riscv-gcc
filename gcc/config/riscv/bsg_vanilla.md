@@ -81,6 +81,8 @@
   "bsg_vanilla_alu")
 
 ;; fpu_float
+;; note: WAW hazards for FPU not currently modeled.
+;; mostly it applies after branch.
 (define_insn_reservation "bsg_vanilla_fpu_float" 5
   (and (eq_attr "tune" "bsg_vanilla")
        (eq_attr "type" "fadd,fmul"))
