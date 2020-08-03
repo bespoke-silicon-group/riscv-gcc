@@ -18,9 +18,7 @@ softfp_float_modes := df tf
 softfp_extensions := sfdf sftf dftf
 softfp_truncations := dfsf tfsf tfdf
 
-ifndef ABI_SINGLE
 softfp_float_modes += sf
-endif
 
 endif
 endif
