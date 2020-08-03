@@ -300,8 +300,21 @@ static const struct riscv_tune_info sifive_7_tune_info = {
 };
 
 
-/* Costs to use when optimizing for rocket.  */
+/* Costs to use when optimizing for bsg_vanilla.  */
 static const struct riscv_tune_info bsg_vanilla_tune_info = {
+  {COSTS_N_INSNS (4), COSTS_N_INSNS (5)},	/* fp_add */
+  {COSTS_N_INSNS (4), COSTS_N_INSNS (5)},	/* fp_mul */
+  {COSTS_N_INSNS (20), COSTS_N_INSNS (20)},	/* fp_div */
+  {COSTS_N_INSNS (4), COSTS_N_INSNS (4)},	/* int_mul */
+  {COSTS_N_INSNS (6), COSTS_N_INSNS (6)},	/* int_div */
+  1,						/* issue_rate */
+  3,						/* branch_cost */
+  5,						/* memory_cost */
+  true,						/* slow_unaligned_access */
+};
+
+/* Costs to use when optimizing for bsg_vanilla2 (new pipeline).  */
+static const struct riscv_tune_info bsg_vanilla2_tune_info = {
   {COSTS_N_INSNS (4), COSTS_N_INSNS (5)},	/* fp_add */
   {COSTS_N_INSNS (4), COSTS_N_INSNS (5)},	/* fp_mul */
   {COSTS_N_INSNS (20), COSTS_N_INSNS (20)},	/* fp_div */
@@ -354,6 +367,7 @@ static const struct riscv_cpu_info riscv_cpu_info_table[] = {
   { "sifive-5-series", generic, &rocket_tune_info },
   { "sifive-7-series", sifive_7, &sifive_7_tune_info },
   { "bsg_vanilla",     bsg_vanilla, &bsg_vanilla_tune_info },
+  { "bsg_vanilla2",     bsg_vanilla2, &bsg_vanilla2_tune_info },
   { "size", generic, &optimize_size_tune_info },
 };
 

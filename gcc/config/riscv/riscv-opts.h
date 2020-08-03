@@ -43,7 +43,8 @@ extern enum riscv_code_model riscv_cmodel;
 enum riscv_microarchitecture_type {
   generic,
   sifive_7,
-  bsg_vanilla
+  bsg_vanilla,
+  bsg_vanilla2
 };
 extern enum riscv_microarchitecture_type riscv_microarchitecture;
 
