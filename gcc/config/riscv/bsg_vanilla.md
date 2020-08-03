@@ -23,6 +23,19 @@
 (define_automaton "bsg_vanilla")
 (define_cpu_unit "bsg_vanilla_alu" "bsg_vanilla")
 
+;; ALU
+(define_insn_reservation "bsg_vanilla_alu" 1
+  (and (eq_attr "tune" "bsg_vanilla")
+       (eq_attr "type" "unknown,const,arith,shift,slt,multi,auipc,nop,logical,move"))
+  "bsg_vanilla_alu")
+
+;; remote load
+(define_insn_reservation "bsg_vanilla_remote_load" 32
+  (and (eq_attr "tune" "bsg_vanilla")
+       (eq_attr "type" "load,fpload")
+       (eq_attr "remote_mem_op" "yes"))
+  "bsg_vanilla_alu")
+
 ;; integer local load
 (define "bsg_vanilla_load" 2
   (and (eq_attr "tune" "bsg_vanilla")
@@ -35,13 +48,6 @@
   (and (eq_attr "tune" "bsg_vanilla")
        (eq_attr "type" "fpload")
        (eq_attr "remote_mem_op" "no"))
-  "bsg_vanilla_alu")
-
-;; integer FP remote load
-(define_insn_reservation "bsg_vanilla_remote_load" 32
-  (and (eq_attr "tune" "bsg_vanilla")
-       (eq_attr "type" "load,fpload")
-       (eq_attr "remote_mem_op" "yes"))
   "bsg_vanilla_alu")
 
 ;; store
@@ -61,12 +67,6 @@
   (and (eq_attr "tune" "bsg_vanilla")
        (eq_attr "type" "imul,idiv"))
   "bsg_vanilla_alu*33")
-
-;; ALU
-(define_insn_reservation "bsg_vanilla_alu" 1
-  (and (eq_attr "tune" "bsg_vanilla")
-       (eq_attr "type" "unknown,const,arith,shift,slt,multi,auipc,nop,logical,move"))
-  "bsg_vanilla_alu")
 
 ;; i2f 
 (define_insn_reservation "bsg_vanilla_i2f" 5
@@ -94,7 +94,6 @@
   (and (eq_attr "tune" "bsg_vanilla")
        (eq_attr "type" "fcmp"))
   "bsg_vanilla_alu")
-
 
 ;; not exactly sure about the direction of fmove
 ;; we just give 5 as the worst case (i -> f)
