@@ -22,76 +22,81 @@
 
 (define_automaton "bsg_vanilla")
 (define_cpu_unit "bsg_vanilla_alu" "bsg_vanilla")
-(define_cpu_unit "bsg_vanilla_imuldiv" "bsg_vanilla")
-(define_cpu_unit "bsg_vanilla_fdivsqrt" "bsg_vanilla")
 
-(define_insn_reservation "bsg_vanilla_alu" 1
+;; integer local load
+(define "bsg_vanilla_load" 2
   (and (eq_attr "tune" "bsg_vanilla")
-       (eq_attr "type" "unknown,const,arith,shift,slt,multi,auipc,nop,logical,move"))
+       (eq_attr "type" "load")
+       (eq_attr "remote_mem_op" "no"))
   "bsg_vanilla_alu")
 
+;; FP local load
+(define "bsg_vanilla_fpload" 3
+  (and (eq_attr "tune" "bsg_vanilla")
+       (eq_attr "type" "fpload")
+       (eq_attr "remote_mem_op" "no"))
+  "bsg_vanilla_alu")
+
+;; integer FP remote load
 (define_insn_reservation "bsg_vanilla_remote_load" 32
   (and (eq_attr "tune" "bsg_vanilla")
        (eq_attr "type" "load,fpload")
        (eq_attr "remote_mem_op" "yes"))
   "bsg_vanilla_alu")
 
-(define_insn_reservation "bsg_vanilla_load" 3
-  (and (eq_attr "tune" "bsg_vanilla")
-       (eq_attr "type" "load,fpload")
-       (eq_attr "remote_mem_op" "no"))
-  "bsg_vanilla_alu")
-
+;; store
 (define_insn_reservation "bsg_vanilla_store" 1
   (and (eq_attr "tune" "bsg_vanilla")
        (eq_attr "type" "store,fpstore"))
   "bsg_vanilla_alu")
 
-(define_insn_reservation "bsg_vanilla_xfer" 3
-  (and (eq_attr "tune" "bsg_vanilla")
-       (eq_attr "type" "mfc,mtc,fcvt,fmove,fcmp"))
-  "bsg_vanilla_alu")
-
+;; branch
 (define_insn_reservation "bsg_vanilla_branch" 1
   (and (eq_attr "tune" "bsg_vanilla")
        (eq_attr "type" "branch,jump,call"))
   "bsg_vanilla_alu")
 
-(define_insn_reservation "bsg_vanilla_imul" 10
+;; imul
+(define_insn_reservation "bsg_vanilla_imuldiv" 33
   (and (eq_attr "tune" "bsg_vanilla")
-       (eq_attr "type" "imul"))
-  "bsg_vanilla_imuldiv*10")
+       (eq_attr "type" "imul,idiv"))
+  "bsg_vanilla_alu*33")
 
-(define_insn_reservation "bsg_vanilla_idivsi" 34
+;; ALU
+(define_insn_reservation "bsg_vanilla_alu" 1
   (and (eq_attr "tune" "bsg_vanilla")
-       (and (eq_attr "type" "idiv")
-	    (eq_attr "mode" "SI")))
-  "bsg_vanilla_imuldiv*34")
-
-(define_insn_reservation "bsg_vanilla_idivdi" 66
-  (and (eq_attr "tune" "bsg_vanilla")
-       (and (eq_attr "type" "idiv")
-	    (eq_attr "mode" "DI")))
-  "bsg_vanilla_imuldiv*66")
-
-(define_insn_reservation "bsg_vanilla_fmul_single" 5
-  (and (eq_attr "tune" "bsg_vanilla")
-       (and (eq_attr "type" "fadd,fmul,fmadd")
-	    (eq_attr "mode" "SF")))
+       (eq_attr "type" "unknown,const,arith,shift,slt,multi,auipc,nop,logical,move"))
   "bsg_vanilla_alu")
 
-(define_insn_reservation "bsg_vanilla_fmul_double" 7
+;; i2f 
+(define_insn_reservation "bsg_vanilla_i2f" 5
   (and (eq_attr "tune" "bsg_vanilla")
-       (and (eq_attr "type" "fadd,fmul,fmadd")
-	    (eq_attr "mode" "DF")))
+       (eq_attr "type" "mtc"))
   "bsg_vanilla_alu")
 
-(define_insn_reservation "bsg_vanilla_fdiv" 20
+;; f2i
+(define_insn_reservation "bsg_vanilla_f2i" 1
   (and (eq_attr "tune" "bsg_vanilla")
-       (eq_attr "type" "fdiv"))
-  "bsg_vanilla_fdivsqrt*20")
+       (eq_attr "type" "mfc"))
+  "bsg_vanilla_alu")
 
-(define_insn_reservation "bsg_vanilla_fsqrt" 25
+;; fpu_float
+(define_insn_reservation "bsg_vanilla_fpu_float" 5
   (and (eq_attr "tune" "bsg_vanilla")
-       (eq_attr "type" "fsqrt"))
-  "bsg_vanilla_fdivsqrt*25")
+       (eq_attr "type" "fadd,fmul"))
+  "bsg_vanilla_alu")
+
+
+;; fcmp
+(define_insn_reservation "bsg_vanilla_fcmp" 1
+  (and (eq_attr "tune" "bsg_vanilla")
+       (eq_attr "type" "fcmp"))
+  "bsg_vanilla_alu")
+
+
+;; not exactly sure about the direction of fmove
+;; we just give 5 as the worst case (i -> f)
+(define_insn_reservation "bsg_vanilla_fmove" 5
+  (and (eq_attr "tune" "bsg_vanilla")
+       (eq_attr "type" "fmove"))
+  "bsg_vanilla_alu")
