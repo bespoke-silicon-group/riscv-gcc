@@ -103,7 +103,7 @@
 
 
 ;; not exactly sure about the direction of fmove
-;; we just give 5 as the worst case (i -> f)
+;; we just give 3 as the worst case (i -> f)
 (define_insn_reservation "bsg_vanilla_fmove" 3
   (and (eq_attr "tune" "bsg_vanilla2")
        (eq_attr "type" "fmove"))
