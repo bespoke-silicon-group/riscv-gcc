@@ -83,6 +83,9 @@
 ;; fpu_float
 ;; note: WAW hazards for FPU not currently modeled.
 ;; mostly it applies after branch.
+;; The instruction spends one cycles in FP_EXE; 3 cycles in FPU; lastly, 1 cycles in FP_WB.
+;; FP_EXE -> F -> P -> U -> FP_WB
+;; Therefore, total 5 cycles of latency. (similarly for i2f)
 (define_insn_reservation "bsg_vanilla_fpu_float" 5
   (and (eq_attr "tune" "bsg_vanilla")
        (eq_attr "type" "fadd,fmul"))
