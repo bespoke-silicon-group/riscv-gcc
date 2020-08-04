@@ -24,7 +24,8 @@
 (define_cpu_unit "bsg_vanilla_alu" "bsg_vanilla")
 
 ;; ALU
-(define_insn_reservation "bsg_vanilla_alu" 1
+;; these are basically integer instructions that takes one cycles in EXE.
+(define_insn_reservation "bsg_vanilla_int" 1
   (and (eq_attr "tune" "bsg_vanilla")
        (eq_attr "type" "unknown,const,arith,shift,slt,multi,auipc,nop,logical,move"))
   "bsg_vanilla_alu")
