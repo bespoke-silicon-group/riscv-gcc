@@ -44,7 +44,7 @@
   "bsg_vanilla_alu")
 
 ;; FP local load
-(define "bsg_vanilla_fpload" 3
+(define_insn_reservation "bsg_vanilla_fpload" 3
   (and (eq_attr "tune" "bsg_vanilla")
        (eq_attr "type" "fpload")
        (eq_attr "remote_mem_op" "no"))
