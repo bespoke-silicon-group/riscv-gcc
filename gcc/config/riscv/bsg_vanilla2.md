@@ -39,7 +39,7 @@
   "bsg_vanilla_alu")
 
 ;; integer local load
-(define "bsg_vanilla_load" 2
+(define_insn_reservation "bsg_vanilla_load" 2
   (and (eq_attr "tune" "bsg_vanilla2")
        (eq_attr "type" "load")
        (eq_attr "remote_mem_op" "no"))
