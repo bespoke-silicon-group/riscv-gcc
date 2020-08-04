@@ -65,6 +65,8 @@
   "bsg_vanilla_alu")
 
 ;; idiv
+;; idiv occupies EXE stage for 1 cycle, and the idiv unit for 33 cycles.
+;; In total, it has 34 cycles of latency. 
 (define_insn_reservation "bsg_vanilla_idiv" 34
   (and (eq_attr "tune" "bsg_vanilla2")
        (eq_attr "type" "idiv"))
@@ -109,7 +111,9 @@
        (eq_attr "type" "fmove"))
   "bsg_vanilla_alu")
 
-;; fdiv
+;; fdiv/fsqrt
+;; fdiv/fsqrt occupies EXE stage for 1 cycle, and the fdiv unit for 25 cycles.
+;; In total, it has 26 cycles of latency. 
 (define_insn_reservation "bsg_vanilla_fdiv" 26
   (and (eq_attr "tune" "bsg_vanilla2")
        (eq_attr "type" "fdiv,fsqrt"))
