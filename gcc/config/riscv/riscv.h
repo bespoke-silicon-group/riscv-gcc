@@ -921,7 +921,7 @@ extern unsigned riscv_stack_boundary;
 #define ADDR_SPACE_REMOTE 1
 #define REGISTER_TARGET_PRAGMAS()					\
     do {								\
-	if (riscv_microarchitecture == bsg_vanilla)			\
+	if (riscv_microarchitecture == bsg_vanilla_2019 || riscv_microarchitecture == bsg_vanilla_2020)			\
 	    c_register_addr_space("__remote", ADDR_SPACE_REMOTE);	\
     } while (0)								\
 
