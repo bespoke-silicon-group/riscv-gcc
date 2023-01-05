@@ -85,6 +85,12 @@
        (eq_attr "type" "imul"))
   "bsg_vanilla_2020_alu")
 
+;; mulh
+;; Try to deschedule because unsupported in hardware
+(define_insn_reservation "bsg_vanilla_2020_mulh" 1000
+  (and (eq_attr "tune" "bsg_vanilla_2020")
+       (eq_attr "type" "imulh"))
+  "bsg_vanilla_2020_alu")
 
 ;; i2f 
 (define_insn_reservation "bsg_vanilla_2020_i2f" 3
